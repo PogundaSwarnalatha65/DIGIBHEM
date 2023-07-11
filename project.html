@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Booking Registration Form</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+        
+        form {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        fieldset {
+            margin-bottom: 20px;
+            border: none;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        
+        .additional-charges {
+            color: #666;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Hotel Booking Registration Form</h2>
+    <form>
+        <fieldset>
+            <legend>Customer Info</legend>
+            <label for="customerName">Customer Name:</label>
+            <input type="text" id="customerName" name="customerName" required>
+            
+            <label for="checkInDate">Check-in Date:</label>
+            <input type="date" id="checkInDate" name="checkInDate" required>
+            
+            <label for="totalDays">Total No of Days:</label>
+            <input type="number" id="totalDays" name="totalDays" required>
+            
+            <label for="totalPersons">Total No of Persons:</label>
+            <input type="number" id="totalPersons" name="totalPersons" required>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Room Information</legend>
+            <label for="roomType">Room Type:</label>
+            <select id="roomType" name="roomType">
+                <option value="deluxe">Deluxe Room</option>
+                <option value="suite">Suite Room</option>
+            </select>
+            
+            <label for="amenities">Amenities:</label>
+            <select id="amenities" name="amenities">
+                <option value="ac">AC</option>
+                <option value="locker">Locker</option>
+            </select>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Advance Payment</legend>
+            <label for="advanceAmount">Advance Amount:</label>
+            <input type="number" id="advanceAmount" name="advanceAmount" required>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Balance Amount</legend>
+            <label for="balance">Balance:</label>
+            <input type="text" id="balance" name="balance" readonly>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Total Cost Calculation</legend>
+            <label for="totalRoomCost">Total Room Cost:</label>
+            <input type="text" id="totalRoomCost" name="totalRoomCost" readonly>
+            
+            <label for="totalAmenitiesCost">Total Amenities Cost:</label>
+            <input type="text" id="totalAmenitiesCost" name="totalAmenitiesCost" readonly>
+            
+            <label for="totalCost">Total Cost:</label>
+            <input type="text" id="totalCost" name="totalCost" readonly>
+        </fieldset>
+        
+        <fieldset>
+            <legend>Additional Charges</legend>
+            <p>Up to 2 People: No Change in Cost</p>
+            <p>Per Day Cost for Extra Person: 1000/-</p>
+        </fieldset>
+        
+        <input type="submit" value="Submit">
+    </form>
+    
+    <script>
+        // Calculate balance amount
+        document.getElementById('advanceAmount').addEventListener('input', function() {
+            var advanceAmount = parseInt(this.value) || 0;
+            var totalCost = parseInt(document.getElementById('totalCost').value) || 0;
+            var balance = totalCost - advanceAmount;
+            document.getElementById('balance').value = balance;
+        });
+        
+        // Calculate total cost
+        document.getElementById('totalDays').addEventListener('input', calculateTotalCost);
+        document.getElementById('roomType').addEventListener('change', calculateTotalCost);
+        document.getElementById('amenities').addEventListener('change', calculateTotalCost);
+        
+        function calculateTotalCost() {
+            var totalDays = parseInt(document.getElementById('totalDays').value) || 0;
+            var roomRate = document.getElementById('roomType').value === 'deluxe' ? 2500 : 4000;
+            var amenitiesCost = document.getElementById('amenities').value === 'ac' ? 1000 : 300;
+            var totalRoomCost = roomRate * totalDays;
+            var totalAmenitiesCost = amenitiesCost * totalDays;
+            var totalCost = totalRoomCost + totalAmenitiesCost;
+            document.getElementById('totalRoomCost').value = totalRoomCost;
+            document.getElementById('totalAmenitiesCost').value = totalAmenitiesCost;
+            document.getElementById('totalCost').value = totalCost;
+            
+            var advanceAmount = parseInt(document.getElementById('advanceAmount').value) || 0;
+            var balance = totalCost - advanceAmount;
+            document.getElementById('balance').value = balance;
+        }
+    </script>
+</body>
+</html>
